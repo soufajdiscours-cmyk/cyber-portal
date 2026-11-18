@@ -103,7 +103,7 @@
 
         <div class="desktop-layout">
             <div class="sidebar" id="sidebar">
-                <div class="logo" style="padding:0 10px 20px; font-size:20px;">OmniTools<span style="color:var(--accent)">.dev</span></div>
+                <div class="logo" style="padding:0 10px 20px; font-size:20px; font-weight:700;">OmniTools<span style="color:var(--accent)">.dev</span></div>
                 <h4>Categories</h4>
                 <a class="sidebar-item active" onclick="filterCat('All', this)">All Tools</a>
             </div>
@@ -160,25 +160,94 @@
             });
         }
 
-        let allTools = [];
-        fetch('tools.json').then(res => res.json()).then(data => {
-            allTools = data;
-            renderSidebar();
-            renderTools(allTools);
+        // البيانات جوه الكود عشان نضمن إنها تظهر
+        const allTools = [
+            {name: "Hash MD5", cat: "Crypto", desc: "Generate MD5 hash"},
+            {name: "Hash SHA256", cat: "Crypto", desc: "Generate SHA256 hash"},
+            {name: "Base64 Encode", cat: "Crypto", desc: "Encode to Base64"},
+            {name: "Base64 Decode", cat: "Crypto", desc: "Decode from Base64"},
+            {name: "URL Encode", cat: "Web", desc: "Encode URL strings"},
+            {name: "URL Decode", cat: "Web", desc: "Decode URL strings"},
+            {name: "JWT Decoder", cat: "Web", desc: "Decode JSON Web Tokens"},
+            {name: "JSON Formatter", cat: "Data", desc: "Format JSON data"},
+            {name: "UUID Generator", cat: "Data", desc: "Generate random UUIDs"},
+            {name: "Password Gen", cat: "Crypto", desc: "Strong password generator"},
+            {name: "IP Lookup", cat: "Network", desc: "Get IP Geolocation"},
+            {name: "DNS Lookup", cat: "Network", desc: "Query DNS records"},
+            {name: "Whois Lookup", cat: "Network", desc: "Domain registration info"},
+            {name: "Port Scanner", cat: "Network", desc: "Scan open ports"},
+            {name: "HTTP Headers", cat: "Web", desc: "Fetch HTTP headers"},
+            {name: "Reverse IP", cat: "Network", desc: "Find domains on IP"},
+            {name: "MAC Lookup", cat: "Network", desc: "Find MAC vendor"},
+            {name: "Subnet Calc", cat: "Network", desc: "Calculate IPv4 subnets"},
+            {name: "CIDR to IP", cat: "Network", desc: "Convert CIDR to IP"},
+            {name: "Ping Test", cat: "Network", desc: "Test connectivity"},
+            {name: "Regex Tester", cat: "Dev", desc: "Test regex"},
+            {name: "Color Converter", cat: "Dev", desc: "HEX to RGB"},
+            {name: "Cron Parser", cat: "Dev", desc: "Explain cron"},
+            {name: "Timestamp", cat: "Dev", desc: "Convert timestamps"},
+            {name: "HTML Entities", cat: "Web", desc: "Encode HTML"},
+            {name: "Markdown Preview", cat: "Dev", desc: "Render markdown"},
+            {name: "SQL Formatter", cat: "Data", desc: "Format SQL"},
+            {name: "XML Formatter", cat: "Data", desc: "Format XML"},
+            {name: "YAML to JSON", cat: "Data", desc: "YAML to JSON"},
+            {name: "JSON to YAML", cat: "Data", desc: "JSON to YAML"},
+            {name: "Lorem Ipsum", cat: "Text", desc: "Placeholder text"},
+            {name: "Word Counter", cat: "Text", desc: "Count words"},
+            {name: "Case Converter", cat: "Text", desc: "Change case"},
+            {name: "Text Diff", cat: "Text", desc: "Compare text"},
+            {name: "Binary to Text", cat: "Crypto", desc: "Binary to string"},
+            {name: "Text to Binary", cat: "Crypto", desc: "String to binary"},
+            {name: "Hex to Text", cat: "Crypto", desc: "Hex to string"},
+            {name: "Text to Hex", cat: "Crypto", desc: "String to hex"},
+            {name: "ROT13 Cipher", cat: "Crypto", desc: "Rotate 13"},
+            {name: "Caesar Cipher", cat: "Crypto", desc: "Shift letters"},
+            {name: "QR Code Gen", cat: "Web", desc: "Generate QR"},
+            {name: "Barcode Gen", cat: "Web", desc: "Generate Barcode"},
+            {name: "Image to Base64", cat: "Data", desc: "Image to Base64"},
+            {name: "CSV to JSON", cat: "Data", desc: "CSV to JSON"},
+            {name: "JSON to CSV", cat: "Data", desc: "JSON to CSV"},
+            {name: "Email Validator", cat: "Dev", desc: "Check email"},
+            {name: "Credit Card Valid", cat: "Data", desc: "Luhn check"},
+            {name: "IBAN Validator", cat: "Data", desc: "Check IBAN"},
+            {name: "Text Encrypt", cat: "Crypto", desc: "AES encrypt"},
+            {name: "Text Decrypt", cat: "Crypto", desc: "AES decrypt"},
+            {name: "File Hasher", cat: "Crypto", desc: "Hash files"},
+            {name: "Webhook Tester", cat: "Web", desc: "Test webhooks"},
+            {name: "API Key Gen", cat: "Dev", desc: "Generate API keys"},
+            {name: "UA Parser", cat: "Web", desc: "Parse User-Agent"},
+            {name: "Phone Info", cat: "OSINT", desc: "Phone lookup"},
+            {name: "Domain Age", cat: "OSINT", desc: "Domain age"},
+            {name: "SSL Checker", cat: "OSINT", desc: "SSL info"},
+            {name: "HTTP Status", cat: "Web", desc: "Check status"},
+            {name: "Robots.txt Parser", cat: "Web", desc: "Fetch robots.txt"},
+            {name: "Meta Tag Extractor", cat: "Web", desc: "Extract meta tags"},
+            {name: "IP Blacklist", cat: "Network", desc: "IP blacklist"},
+            {name: "Port Knocking", cat: "Network", desc: "Port knock"},
+            {name: "DNS over HTTPS", cat: "Network", desc: "DoH query"},
+            {name: "Tor Checker", cat: "Network", desc: "Check Tor"},
+            {name: "VPN Detector", cat: "Network", desc: "Detect VPN"},
+            {name: "Open Ports", cat: "Network", desc: "Quick scan"},
+            {name: "Header Analyzer", cat: "Web", desc: "Analyze headers"},
+            {name: "Cookie Parser", cat: "Web", desc: "Parse cookies"},
+            {name: "Redirect Checker", cat: "Web", desc: "Trace redirects"},
+            {name: "SSL Decoder", cat: "OSINT", desc: "Decode SSL"},
+            {name: "DNS Propagation", cat: "Network", desc: "DNS check"},
+            {name: "IP Calculator", cat: "Network", desc: "IP math"}
+        ];
+
+        // عرض الفئات في القائمة الجانبية
+        const cats = [...new Set(allTools.map(t => t.cat))];
+        const sb = document.getElementById('sidebar');
+        cats.forEach(c => {
+            const a = document.createElement('a');
+            a.className = 'sidebar-item';
+            a.innerText = c;
+            a.onclick = function() { filterCat(c, this); };
+            sb.appendChild(a);
         });
 
-        function renderSidebar() {
-            const cats = [...new Set(allTools.map(t => t.cat))];
-            const sb = document.getElementById('sidebar');
-            cats.forEach(c => {
-                const a = document.createElement('a');
-                a.className = 'sidebar-item';
-                a.innerText = c;
-                a.onclick = function() { filterCat(c, this); };
-                sb.appendChild(a);
-            });
-        }
-
+        // عرض الأدوات
         function renderTools(tools) {
             const grid = document.getElementById('grid');
             grid.innerHTML = "";
@@ -190,13 +259,15 @@
                 grid.appendChild(card);
             });
         }
+        renderTools(allTools);
 
+        // الفلترة
         function filterCat(cat, el) {
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
             if(el) el.classList.add('active');
             if(cat === 'All') renderTools(allTools);
             else renderTools(allTools.filter(t => t.cat === cat));
-            if (window.innerWidth <= 768) toggleSidebar(); // يقفل القائمة في الموبايل بعد الاختيار
+            if (window.innerWidth <= 768) toggleSidebar();
         }
 
         function filterTools() {
