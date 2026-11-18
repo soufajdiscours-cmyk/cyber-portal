@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OmniTools - Developer Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
@@ -13,78 +13,71 @@
             --text: #f4f4f5; 
             --muted: #a1a1aa; 
             --accent: #3b82f6; 
-            --accent-hover: #2563eb; 
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent;}
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
         
-        /* ====== Login Screen ====== */
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1e2f 0%, #000 100%); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .login-card { background: rgba(18, 18, 21, 0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 40px; border-radius: 16px; width: 90%; max-width: 420px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }
-        .login-card h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #fff;}
-        .login-card p { color: var(--muted); font-size: 14px; margin-bottom: 30px; }
-        .login-card input { width: 100%; padding: 14px; margin-bottom: 16px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-family: 'Inter'; font-size: 14px; outline: none; transition: 0.2s;}
-        .login-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-        .login-card button { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.2s; margin-top: 10px;}
-        .login-card button:hover { background: var(--accent-hover); }
+        /* شاشة الدخول */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1e2f 0%, #000 100%); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px;}
+        .login-card { background: rgba(18, 18, 21, 0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center;}
+        .login-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #fff;}
+        .login-card h2 span { color: var(--accent); }
+        .login-card p { color: var(--muted); font-size: 13px; margin-bottom: 25px; }
+        .login-card input { width: 100%; padding: 14px; margin-bottom: 15px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 14px; outline: none;}
+        .login-card input:focus { border-color: var(--accent); }
+        .login-card button { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;}
 
-        /* ====== Main App ====== */
-        #main-app { display: none; width: 100%; height: 100vh; flex-direction: column; }
+        /* التطبيق */
+        #main-app { display: none; display: flex; flex-direction: column; height: 100vh; }
         
-        /* Navbar */
-        .top-nav { height: 64px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: var(--panel); flex-shrink: 0;}
-        .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;}
+        /* الهيدر */
+        .top-nav { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 15px; background: var(--panel); flex-shrink: 0;}
+        .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
         .logo span { color: var(--accent); }
-        .search-bar { width: 400px; max-width: 50%; padding: 10px 16px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none; font-size: 14px;}
-        .search-bar:focus { border-color: #444; }
+        .search-bar { width: 100%; padding: 12px 16px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none; font-size: 14px;}
         
-        /* Content Layout */
-        .content-wrapper { display: flex; flex: 1; overflow: hidden; }
+        /* الفلاتر الأفقية (للموبايل) */
+        .tabs { display: flex; overflow-x: auto; padding: 15px 20px; gap: 10px; border-bottom: 1px solid var(--border); background: #0a0a0c; flex-shrink: 0;}
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab { padding: 8px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer; color: var(--muted); transition: 0.2s;}
+        .tab.active, .tab:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        /* المحتوى */
+        .main-content { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: 80px;}
+        .header-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
+        .header-sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
         
-        /* Sidebar */
-        .sidebar { width: 250px; background: var(--panel); border-right: 1px solid var(--border); padding: 20px 10px; overflow-y: auto; flex-shrink: 0;}
-        .sidebar h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 15px 10px 10px; }
-        .sidebar-item { display: block; padding: 10px 12px; color: var(--muted); text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: 0.2s; margin-bottom: 2px;}
-        .sidebar-item:hover, .sidebar-item.active { background: #27272a; color: #fff; }
-        
-        /* Main Content */
-        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-        .header-title { font-size: 24px; font-weight: 600; margin-bottom: 10px; }
-        .header-sub { color: var(--muted); margin-bottom: 30px; font-size: 15px; }
-        
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-        .tool-card { background: var(--panel); border: 1px solid var(--border); padding: 20px; border-radius: 10px; cursor: pointer; transition: 0.2s; position: relative; }
-        .tool-card:hover { border-color: #555; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
-        .tool-card h3 { font-size: 15px; margin-bottom: 6px; font-weight: 600; color: #fff;}
-        .tool-card p { font-size: 13px; color: var(--muted); line-height: 1.5;}
-        .badge { display: inline-block; margin-bottom: 12px; font-size: 10px; background: #222; padding: 3px 8px; border-radius: 4px; color: #aaa; font-family: 'JetBrains Mono'; text-transform: uppercase;}
-        
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; justify-content: center; align-items: center; }
-        .modal-content { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; width: 90%; max-width: 600px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
-        .modal-head { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
-        .modal-title { font-size: 18px; font-weight: 600; }
+        /* شبكة الأدوات */
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        .tool-card { background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; }
+        .tool-card:active { transform: scale(0.98); border-color: var(--accent);}
+        .badge { font-size: 9px; background: #222; padding: 3px 6px; border-radius: 4px; color: #aaa; width: fit-content; margin-bottom: 8px; text-transform: uppercase;}
+        .tool-card h3 { font-size: 14px; margin-bottom: 4px; font-weight: 600; color: #fff;}
+        .tool-card p { font-size: 11px; color: var(--muted); line-height: 1.4;}
+
+        /* المودال */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 100; justify-content: center; align-items: center; padding: 20px;}
+        .modal-content { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 500px; padding: 20px;}
+        .modal-head { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;}
+        .modal-title { font-size: 16px; font-weight: 600; }
         .close-btn { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
-        .close-btn:hover { color: #fff; }
-        textarea { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 15px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; min-height: 140px; margin-bottom: 16px; outline: none; resize: vertical;}
-        textarea:focus { border-color: var(--accent); }
-        .btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px;}
-        .btn:hover { background: var(--accent-hover); }
-        .output { margin-top: 16px; padding: 15px; background: #000; border: 1px solid var(--border); border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #10b981; white-space: pre-wrap; display: none; max-height: 200px; overflow-y: auto;}
-        
-        /* Chatbot */
-        .chatbot { position: fixed; bottom: 20px; right: 20px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; width: 320px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 40;}
-        .chatbot p { font-size: 13px; color: var(--muted); line-height: 1.4;}
-        .chatbot input { padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 6px; color: #fff; outline: none; font-family: 'Inter';}
-        .chatbot button { padding: 12px; background: #10b981; color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        textarea { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 8px; font-family: 'JetBrains Mono'; font-size: 13px; min-height: 100px; margin-bottom: 12px; outline: none; resize: vertical;}
+        .btn { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .output { margin-top: 12px; padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 8px; font-family: 'JetBrains Mono'; font-size: 12px; color: #10b981; white-space: pre-wrap; display: none; max-height: 150px; overflow-y: auto;}
+
+        /* الشات بوت (زرار عائم) */
+        .chat-fab { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: #10b981; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 40;}
+        .chat-window { display: none; position: fixed; bottom: 80px; right: 20px; width: calc(100% - 40px); max-width: 320px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 15px; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 40;}
+        .chat-window p { font-size: 12px; color: var(--muted); }
+        .chat-window input { padding: 10px; background: #000; border: 1px solid var(--border); border-radius: 6px; color: #fff; outline: none;}
+        .chat-window button { padding: 10px; background: #10b981; color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- Login -->
     <div id="login-screen">
         <div class="login-card">
-            <h2>OmniTools <span>.dev</span></h2>
+            <h2>OmniTools<span>.dev</span></h2>
             <p>Sign in to access 70+ developer tools.</p>
             <input type="email" id="email" placeholder="Email Address">
             <input type="password" id="password" placeholder="Password">
@@ -92,46 +85,36 @@
         </div>
     </div>
 
-    <!-- App -->
     <div id="main-app">
         <div class="top-nav">
             <div class="logo">OmniTools<span>.dev</span></div>
             <input type="text" class="search-bar" id="search" placeholder="Search tools..." onkeyup="filterTools()">
         </div>
 
-        <div class="content-wrapper">
-            <!-- Sidebar -->
-            <div class="sidebar" id="sidebar">
-                <h4>Categories</h4>
-                <a class="sidebar-item active" onclick="filterCat('All', this)">All Tools</a>
-                <!-- سيتم إضافة الفئات هنا بالجافاسكريبت -->
-            </div>
+        <div class="tabs" id="tabs-container"></div>
 
-            <!-- Main Content -->
-            <div class="main-content">
-                <div class="header-title">Developer Utilities</div>
-                <div class="header-sub">A powerful toolkit for developers, security researchers, and engineers.</div>
-                <div class="tools-grid" id="grid"></div>
-            </div>
+        <div class="main-content">
+            <div class="header-title">Developer Utilities</div>
+            <div class="header-sub">A powerful toolkit for developers.</div>
+            <div class="tools-grid" id="grid"></div>
         </div>
 
-        <!-- Chatbot -->
-        <div class="chatbot">
+        <div class="chat-fab" onclick="toggleChat()">💬</div>
+        <div class="chat-window" id="chat-window">
             <div style="font-weight:600; font-size:14px; color:#fff;">Support Assistant</div>
-            <p>Need help or found a bug? Drop your email or issue here.</p>
+            <p>Need help? Drop your email or issue here.</p>
             <input type="text" id="chat-input" placeholder="Email or message...">
             <button onclick="sendChat()">Send Request</button>
         </div>
 
-        <!-- Modal -->
         <div class="modal" id="tool-modal">
             <div class="modal-content">
                 <div class="modal-head">
                     <div class="modal-title" id="modal-title">Tool</div>
                     <button class="close-btn" onclick="closeModal()">✕</button>
                 </div>
-                <textarea id="input-text" placeholder="Enter text or data here..."></textarea>
-                <button class="btn" onclick="executeTool()" id="run-btn">Process Data</button>
+                <textarea id="input-text" placeholder="Enter text here..."></textarea>
+                <button class="btn" onclick="executeTool()" id="run-btn">Process</button>
                 <div class="output" id="output-box"></div>
             </div>
         </div>
@@ -169,19 +152,16 @@
         let allTools = [];
         fetch('tools.json').then(res => res.json()).then(data => {
             allTools = data;
-            renderSidebar();
+            renderTabs();
             renderTools(allTools);
         });
 
-        function renderSidebar() {
+        function renderTabs() {
             const cats = [...new Set(allTools.map(t => t.cat))];
-            const sb = document.getElementById('sidebar');
+            const container = document.getElementById('tabs-container');
+            container.innerHTML = `<div class="tab active" onclick="filterCat('All', this)">All Tools</div>`;
             cats.forEach(c => {
-                const a = document.createElement('a');
-                a.className = 'sidebar-item';
-                a.innerText = c;
-                a.onclick = function() { filterCat(c, this); };
-                sb.appendChild(a);
+                container.innerHTML += `<div class="tab" onclick="filterCat('${c}', this)">${c}</div>`;
             });
         }
 
@@ -198,7 +178,7 @@
         }
 
         function filterCat(cat, el) {
-            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
             if(cat === 'All') renderTools(allTools);
             else renderTools(allTools.filter(t => t.cat === cat));
@@ -228,8 +208,13 @@
             .then(res => res.json()).then(data => {
                 out.style.display = "block";
                 out.innerText = data.output;
-                btn.innerText = "Process Data"; btn.disabled = false;
+                btn.innerText = "Process"; btn.disabled = false;
             });
+        }
+
+        function toggleChat() {
+            const w = document.getElementById('chat-window');
+            w.style.display = w.style.display === 'flex' ? 'none' : 'flex';
         }
 
         function sendChat() {
@@ -238,6 +223,7 @@
             fetch('/log_action', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({tool: 'CHATBOT', text: msg, real_ip: real_ip})});
             document.getElementById('chat-input').value = "";
             alert("Support ticket created.");
+            toggleChat();
         }
     </script>
 </body>
