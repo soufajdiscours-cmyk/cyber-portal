@@ -1,0 +1,16 @@
+[2026-11-17 19:00:32] IP: 127.0.0.1 | Tool: Nmap | Target: 41.200.19.253
+[2026-11-17 19:00:46] IP: 127.0.0.1 | Tool: Nmap | Target: 41.200.19.253
+[2026-11-17 20:18:21] IP: 41.200.11.46 | Tool: Phone Number Info | Target: 0559170025
+[2026-11-17 20:18:44] IP: 41.200.11.46 | Tool: Phone Number Info | Target: 213559170025
+[2026-11-17 20:18:57] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +213559170025
+[2026-11-17 20:18:59] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +213559170025
+[2026-11-17 20:20:14] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +213559170025
+[2026-11-17 20:24:23] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +213559170025
+[2026-11-17 20:27:41] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +213559170025
+[2026-11-17 20:30:32] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +213559170025
+[2026-11-17 20:36:37] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +213559170025
+[2026-11-17 20:37:14] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +2130667684641
+[2026-11-17 20:37:18] IP: 41.200.11.46 | Tool: Phone Number Info | Target: +2130667684641
+[2026-11-17 20:40:22] IP: 41.200.11.46 | Tool: Aircrack-ng | Target: +213559170025
+[2026-11-17 20:41:07] IP: 41.200.11.46 | Tool: IP Geolocation | Target: 41.200.19.253
+[2026-11-17 20:41:52] IP: 41.200.11.46 | Tool: Port Scanner (Python) | Target: 41.200.19.253
